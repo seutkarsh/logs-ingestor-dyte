@@ -2,6 +2,7 @@ import { Application, Request, Response } from "express";
 import Router from "../api";
 import bodyParser from "body-parser";
 import Logger from "./logger";
+import cors from "cors"
 
 export default (expressApp: Application): void => {
 	expressApp.get("/whoAmI", (req: Request, res: Response) => {
@@ -19,12 +20,15 @@ export default (expressApp: Application): void => {
 		res.status(200).end();
 	});
 
+	expressApp.use(cors())
 	//Middlewares
 	expressApp.use(bodyParser.json({ limit: "5mb" }));
 	expressApp.use(bodyParser.urlencoded({ extended: true }));
 
 	//Router Group
-	expressApp.use(Router());
+	expressApp.use('/api',Router());
+
+
 
 	/// error handlers
 	// expressApp.use(
